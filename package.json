@@ -4,25 +4,28 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"build": "npm run clean && webpack",
 		"clean": "rimraf dist",
-		"pm": "node node_modules/@passoa/pm -t android",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"build": "npm run clean && rollup -c",
+		"dev": "rollup -c rollup.dev.js -w",
+		"test": "node test/test.js",
+		"pretest": "npm run build",
+		"pm": "node node_modules/@passoa/pm -t android"
 	},
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@babel/plugin-transform-runtime": "^7.5.5",
-		"@babel/runtime": "^7.5.5",
-		"@passoa/pack": "^1.0.5"
+		"@passoa/pack": "^1.0.8"
 	},
 	"devDependencies": {
 		"@passoa/pm": "^1.0.2",
-		"babel-loader": "^8.0.6",
-		"@babel/core": "^7.5.5",
-		"@babel/preset-env": "^7.5.5",
-		"webpack": "^4.35.3",
-		"webpack-bundle-analyzer": "^3.3.2",
-		"webpack-cli": "^3.3.5"
+		"@types/mkdirp": "^0.5.2",
+		"@types/node": "^12.6.8",
+		"fs-extra": "^8.1.0",
+		"rimraf": "^2.6.3",
+		"rollup": "^1.16.7",
+		"rollup-plugin-commonjs": "^10.0.0",
+		"rollup-plugin-node-resolve": "^5.1.0",
+		"rollup-plugin-typescript2": "^0.22.1",
+		"typescript": "^3.5.3"
 	}
 }
