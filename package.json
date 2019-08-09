@@ -6,10 +6,11 @@
 	"scripts": {
 		"clean": "rimraf dist",
 		"build": "npm run clean && rollup -c",
-		"dev": "rollup -c rollup.dev.js -w",
+		"dev": "rollup -c -w",
 		"test": "node test/test.js",
 		"pretest": "npm run build",
-		"pm": "node node_modules/@passoa/pm -t android"
+		"pm-android": "node node_modules/@passoa/pm -t android",
+		"pm-msvc": "node node_modules/@passoa/pm -t msvc"
 	},
 	"author": "",
 	"license": "ISC",

@@ -26,7 +26,7 @@ export default [
 	// `file` and `format` for each target)
 	{
 		input: 'src/index.ts',
-		external: [ 'net', 'stream', 'fs', 'child_process' ],
+		external: [ 'net', 'stream', 'fs', 'child_process', '@passoa/img' ],
 		plugins: [
 			typescript({ include: [ '*.ts+(|x)', '**/*.ts+(|x)', '*.js+(|x)', '**/*.js+(|x)' ] }),
 			resolve({ preferBuiltins: true }), // so Rollup can find `ms`

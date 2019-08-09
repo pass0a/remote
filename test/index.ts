@@ -14,10 +14,13 @@ class Remote {
 	private cli: Socket;
 	async connectDev(opt: ConnectOpts) {
 		return new Promise((resolve, reject) => {
-			this.cli = connect(6009, '127.0.0.1', () => {
+			this.cli = connect(6009, '192.168.0.101', () => {
 				// console.log('connected!!!!');
 				// this.cli.on('data', (data) => {
 				// 	console.log('data', data.length);
+				// });
+				// this.cli.on('error', (err) => {
+				// 	console.log(err.message);
 				// });
 				this.cli.pipe(this.ups);
 				this.ps.pipe(this.cli);
@@ -33,16 +36,16 @@ class Remote {
 	}
 	async sendCmd(cmd: any, timeout?: number) {
 		if (timeout == undefined) {
-			timeout = 3000;
+			timeout = 5000;
 		}
 
 		return new Promise((resolve, reject) => {
-			this.ups.on('data', function(data) {
+			this.ups.on('data', (data) => {
 				if (cmd.type == data.type) {
-					console.log('what the fuck', this.tm);
 					if (data.stat && data.buf) {
+						console.log(data.buf.constructor.name, data.buf.length, data.buf);
+
 						if (data.buf.byteLength) {
-							console.log('!!!!!!!!!!', cmd.filepath);
 							writeFileSync(cmd.filepath, data.buf);
 						}
 					}
