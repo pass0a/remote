@@ -14,8 +14,44 @@ steps:
   inputs:
     versionSpec: '10.x'
   displayName: 'Install Node.js'
+  
+- task: DownloadGitHubRelease@0
+  inputs:
+    connection: 'GitHub connection 1'
+    userRepository: 'losper/passoa'
+    defaultVersionType: 'latest'
+    itemPattern: 'passoa-android*'
+    downloadPath: './'
 
 - script: |
     npm install
+    npm run pm-android
+    ls tmp/
     npm run build
   displayName: 'npm install and build'
+
+- script: |
+   7z x passoa*.zip -r -o./dist/ -y
+   ls
+   cp node_modules/@passoa/ /dist/node_modules/@passoa/ -rf
+  displayName: 'install passoa'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'dist/'
+    includeRootFolder: false
+    archiveType: '7z'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/remote-android-$(Build.SourceBranchName).7z'
+    replaceExistingArchive: true
+  condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+- task: GitHubRelease@0
+  inputs:
+    gitHubConnection: 'GitHub connection 1'
+    repositoryName: '$(Build.Repository.Name)'
+    action: 'create'
+    target: '$(Build.SourceVersion)'
+    tagSource: 'auto'
+    releaseNotesFile: 'ChangeLog'
+    addChangeLog: false
+  condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))

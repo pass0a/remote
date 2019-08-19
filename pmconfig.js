@@ -1,7 +1,7 @@
 module.exports = [
 	{
 		name: 'img',
-		msvc: 'ftp://118.24.247.135/poseidon/img-msvc-master.tar.gz',
-		android: 'ftp://118.24.247.135/poseidon/img-android17-master.tar.gz'
+		android: 'https://github.com/pass0a/img/releases/download/v1.0.1/img-android17-v1.0.1.tar.gz',
+		msvc: 'https://github.com/pass0a/img/releases/download/v1.0.1/img-msvc-v1.0.1.tar.gz'
 	}
 ];
