@@ -17,8 +17,8 @@ export class Logic extends Duplex {
 	cutScreen() {
 		//execSync('adb exec-out screencap test.raw');
 		console.log('cutScreen!!!');
-		execSync('screencap test.raw');
-		var buf = readFileSync('test.raw');
+		execSync('screencap ' + __dirname + '/test.raw');
+		var buf = readFileSync(__dirname + '/test.raw');
 		var { info, data } = screencapInfo(buf);
 		console.log('shenme:', info.width, info.height, info.bpp);
 		encode(data, info, (err, data) => {
