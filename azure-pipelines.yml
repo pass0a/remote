@@ -26,14 +26,14 @@ steps:
 - script: |
     npm install
     npm run pm-android
-    ls tmp/
     npm run build
   displayName: 'npm install and build'
 
 - script: |
-   7z x passoa*.zip -r -o./dist/ -y
+   7z x passoa*.zip -r -o./ -y
    ls
-   cp node_modules/@passoa/ /dist/node_modules/@passoa/ -rf
+   cp android/ dist/ -rf
+   cp node_modules/@passoa/ dist/node_modules/@passoa/ -rf
   displayName: 'install passoa'
 
 - task: ArchiveFiles@2
