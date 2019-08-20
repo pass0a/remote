@@ -31,7 +31,7 @@ steps:
 
 - script: |
    7z x passoa*.zip -r -o./ -y
-   cp android dist/ -rf
+   cp android/* dist/ -rf
    ls dist
    cp node_modules/@passoa/ dist/node_modules/@passoa/ -rf
   displayName: 'install passoa'
