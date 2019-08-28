@@ -13,5 +13,9 @@ let s = createServer((c) => {
 	let logic = new Logic();
 
 	c.pipe(ups).pipe(logic).pipe(ps).pipe(c);
+	c.on('error', (code, msg) => {
+		console.log('info:', code, msg);
+	});
 });
 s.listen(6009);
+console.log('passoa success');

@@ -32,8 +32,9 @@ steps:
 - script: |
    7z x passoa*.zip -r -o./ -y
    cp android/* dist/ -rf
-   ls dist
    cp node_modules/@passoa/ dist/node_modules/@passoa/ -rf
+   mv dist/node_modules/@passoa/img/libturbojpeg.so dist/
+   ls dist
   displayName: 'install passoa'
 
 - task: ArchiveFiles@2
