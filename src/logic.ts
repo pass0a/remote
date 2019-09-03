@@ -9,10 +9,8 @@ export class Logic extends Duplex {
 		this.on('cutScreen', this.cutScreen);
 		this.on('click', this.click);
 		this.on('slide', this.slide);
-		this.on('long_click', this.longClick);
 		this.on('alive', this.alive);
 		this.on('auth', this.auth);
-		this.on('checkEq', this.checkEq);
 	}
 	cutScreen() {
 		//execSync('adb exec-out screencap test.raw');
@@ -34,7 +32,13 @@ export class Logic extends Duplex {
 	}
 	click(msg) {
 		console.log(msg.x, msg.y);
-		let cmd = 'sh /system/bin/input tap ' + msg.x + ' ' + msg.y;
+		let cmd:any;
+		console.log("click_type:",msg.click_type);
+		if(msg.click_type=="0"){
+			cmd = 'sh /system/bin/input tap ' + msg.x + ' ' + msg.y;
+		}else{
+			cmd = 'sh /system/bin/input swipe ' + msg.x + ' ' + msg.y + ' ' + msg.x + ' ' + msg.y + ' ' + msg.time;
+		}
 		console.log(cmd);
 		execSync(cmd);
 		this.push({ type: 'click', stat: true });
@@ -44,19 +48,11 @@ export class Logic extends Duplex {
 		execSync(cmd);
 		this.push({ type: 'slide', stat: true });
 	}
-	longClick(msg) {
-		let cmd = 'sh /system/bin/input swipe ' + msg.x + ' ' + msg.y + ' ' + msg.x + ' ' + msg.y + ' ' + msg.time;
-		execSync(cmd);
-		this.push({ type: 'long_click', stat: true });
-	}
 	alive() {
 		this.push({ type: 'alive', stat: true });
 	}
 	auth() {
 		this.push({ type: 'auth', stat: true, platform: 2 });
-	}
-	checkEq() {
-		this.push({ type: 'checkEq' });
 	}
 	onEvent() {}
 	_write(msg: any, encoding: string, callback: (error?: Error | null) => void) {
