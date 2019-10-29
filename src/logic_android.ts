@@ -30,20 +30,20 @@ export class Logic extends Duplex {
 			}
 		});
 	}
-	click(msg) {
+	click(msg: any) {
 		console.log(msg.x, msg.y);
-		let cmd:any;
-		console.log("click_type:",msg.click_type);
-		if(msg.click_type=="0"){
+		let cmd: any;
+		console.log('click_type:', msg.click_type);
+		if (msg.click_type == '0') {
 			cmd = 'sh /system/bin/input tap ' + msg.x + ' ' + msg.y;
-		}else{
+		} else {
 			cmd = 'sh /system/bin/input swipe ' + msg.x + ' ' + msg.y + ' ' + msg.x + ' ' + msg.y + ' ' + msg.time;
 		}
 		console.log(cmd);
 		execSync(cmd);
 		this.push({ type: 'click', stat: true });
 	}
-	slide(msg) {
+	slide(msg: any) {
 		let cmd = 'sh /system/bin/input swipe ' + msg.x1 + ' ' + msg.y1 + ' ' + msg.x2 + ' ' + msg.y2 + ' ' + msg.time;
 		execSync(cmd);
 		this.push({ type: 'slide', stat: true });

@@ -11,7 +11,7 @@ class Remote {
 	private ps = new packStream();
 	private ups = new unpackStream();
 	private tm: any;
-	private cli: Socket;
+	private cli?: Socket;
 	async connectDev(opt: ConnectOpts) {
 		return new Promise((resolve, reject) => {
 			this.cli = connect(6009, '192.168.0.101', () => {
@@ -22,8 +22,10 @@ class Remote {
 				// this.cli.on('error', (err) => {
 				// 	console.log(err.message);
 				// });
-				this.cli.pipe(this.ups);
-				this.ps.pipe(this.cli);
+				if (this.cli) {
+					this.cli.pipe(this.ups);
+					this.ps.pipe(this.cli);
+				}
 				resolve();
 			});
 		});
@@ -31,7 +33,7 @@ class Remote {
 	disconnectDev() {
 		if (this.cli) {
 			this.cli.end();
-			this.cli = null;
+			this.cli = undefined;
 		}
 	}
 	async sendCmd(cmd: any, timeout?: number) {

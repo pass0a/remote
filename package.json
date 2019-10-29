@@ -4,13 +4,12 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"clean": "rimraf dist",
-		"build": "npm run clean && rollup -c",
-		"dev": "rollup -c -w",
+		"arm": "rimraf dist/ && cross-env opt=arm webpack",
+		"android": "rimraf dist/ && cross-env opt=android webpack",
 		"test": "node test/test.js",
 		"pretest": "npm run build",
 		"pm-android": "node node_modules/@passoa/pm -t android",
-		"pm-msvc": "node node_modules/@passoa/pm -t msvc"
+		"pm-arm": "node node_modules/@passoa/pm -t arm"
 	},
 	"author": "",
 	"license": "ISC",
@@ -18,15 +17,20 @@
 		"@passoa/pack": "^1.0.8"
 	},
 	"devDependencies": {
-		"@passoa/pm": "^1.0.3",
+		"cross-env": "^6.0.3",
+		"@babel/core": "^7.5.5",
+		"@babel/preset-env": "^7.5.5",
 		"@types/mkdirp": "^0.5.2",
 		"@types/node": "^12.6.8",
-		"fs-extra": "^8.1.0",
+		"@types/tape": "^4.2.33",
+		"@types/fs-extra": "^8.0.1",
+		"@types/minimist": "^1.2.0",
+		"babel-loader": "^8.0.6",
 		"rimraf": "^2.6.3",
-		"rollup": "^1.16.7",
-		"rollup-plugin-commonjs": "^10.0.0",
-		"rollup-plugin-node-resolve": "^5.1.0",
-		"rollup-plugin-typescript2": "^0.22.1",
-		"typescript": "^3.5.3"
+		"ts-loader": "^6.0.4",
+		"typescript": "^3.5.3",
+		"webpack": "^4.36.1",
+		"webpack-bundle-analyzer": "^3.3.2",
+		"webpack-cli": "^3.3.6"
 	}
 }

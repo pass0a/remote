@@ -4,6 +4,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
+  batch: true
+  branches:
+    include:
+    - master
+    - refs/tags/v*
+pr:
 - master
 
 pool:
@@ -20,19 +26,19 @@ steps:
     connection: 'GitHub connection 1'
     userRepository: 'losper/passoa'
     defaultVersionType: 'latest'
-    itemPattern: 'passoa-android*'
+    itemPattern: 'passoa-*'
     downloadPath: './'
 
 - script: |
     npm install
     npm run pm-android
-    npm run build
+    npm run android
   displayName: 'npm install and build'
 
 - script: |
    7z x passoa*.zip -r -o./ -y
    cp android/* dist/ -rf
-   cp node_modules/@passoa/ dist/node_modules/@passoa/ -rf
+   mv node_modules/@passoa/ dist/node_modules/@passoa/ -rf
    mv dist/node_modules/@passoa/img/libturbojpeg.so dist/
    ls dist
   displayName: 'install passoa'
@@ -43,6 +49,29 @@ steps:
     includeRootFolder: false
     archiveType: '7z'
     archiveFile: '$(Build.ArtifactStagingDirectory)/remote-android-$(Build.SourceBranchName).7z'
+    replaceExistingArchive: true
+  condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+- script: |
+    rm dist -rf
+    npm run pm-arm
+    npm run arm
+  displayName: 'npm install and build'
+
+- script: |
+   7z x passoa*.zip -r -o./ -y
+   cp arm/* dist/ -rf
+   mv node_modules/@passoa/ dist/node_modules/@passoa/ -rf
+   mv dist/node_modules/@passoa/img/libturbojpeg.so dist/
+   ls dist
+  displayName: 'install passoa'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'dist/'
+    includeRootFolder: false
+    archiveType: '7z'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/remote-arm-$(Build.SourceBranchName).7z'
     replaceExistingArchive: true
   condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
 
