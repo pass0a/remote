@@ -17,6 +17,7 @@
 		"@passoa/pack": "^1.0.8"
 	},
 	"devDependencies": {
+		"@passoa/pm": "latest",
 		"cross-env": "^6.0.3",
 		"@babel/core": "^7.5.5",
 		"@babel/preset-env": "^7.5.5",
