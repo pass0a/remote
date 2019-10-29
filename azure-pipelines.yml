@@ -54,6 +54,7 @@ steps:
 
 - script: |
     rm dist -rf
+    npm install
     npm run pm-arm
     npm run arm
   displayName: 'npm install and build'
