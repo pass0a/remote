@@ -5,17 +5,11 @@ let opt_dist = 'dist';
 let opt_watch = false;
 
 module.exports = () => {
-	let index_file = './src/android.ts';
-	let exclude_file = [ path.resolve(__dirname, 'src/logic_arm.ts'), path.resolve(__dirname, 'src/arm.ts') ];
-	if (process.env.opt == 'arm') {
-		index_file = './src/arm.ts';
-		exclude_file = [ path.resolve(__dirname, 'src/logic_android.ts'), path.resolve(__dirname, 'src/android.ts') ];
-	}
 	const nodeConfig = {
 		// Change to your "entry-point".
 		watch: opt_watch,
 		entry: {
-			index: index_file
+			index: process.env.opt == 'arm' ? './src/arm/index.ts' : './src/android/index.ts'
 		},
 		output: {
 			path: path.resolve(__dirname, opt_dist),
@@ -38,10 +32,9 @@ module.exports = () => {
 					// Include ts, tsx, js, and jsx files.
 					test: /\.(ts)x?$/,
 					loader: 'ts-loader',
-					exclude: [ exclude_file ],
 					options: {
 						// 指定特定的ts编译配置，为了区分脚本的ts配置
-						configFile: path.resolve(__dirname, './tsconfig.json')
+						configFile: path.resolve(__dirname, `src/${process.env.opt}/tsconfig.json`)
 					}
 				}
 			]
@@ -78,9 +71,9 @@ module.exports = () => {
 			'@passoa/fb': '@passoa/fb',
 			'@passoa/touch': '@passoa/touch'
 		},
-		devtool: 'source-map',
+		devtool: process.env.dev ? 'source-map' : 'none',
 		target: 'node',
-		mode: 'development' //'production'
+		mode: 'development' // 'production'
 	};
 	return [ nodeConfig ];
 };
