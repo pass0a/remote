@@ -37,9 +37,8 @@ steps:
 
 - script: |
    7z x passoa-android-*.zip -r -o./ -y
-   ls -la
    cp android/* dist/ -rf
-   mv node_modules/@passoa/ dist/node_modules/@passoa/ -rf
+   mv node_modules/@passoa/ dist/node_modules/@passoa/
    mv dist/node_modules/@passoa/img/libturbojpeg.so dist/
    ls dist
   displayName: 'install passoa'
@@ -60,10 +59,9 @@ steps:
   displayName: 'npm install and build'
 
 - script: |
-   7z x passoa*.zip -r -o./ -y
-   ls -la
+   7z x passoa-arm*.zip -r -o./ -y
    cp arm/* dist/ -rf
-   mv node_modules/@passoa/ dist/node_modules/@passoa/ -rf
+   mv node_modules/@passoa/ dist/node_modules/@passoa/
    mv dist/node_modules/@passoa/img/libturbojpeg.so dist/
    ls dist
   displayName: 'install passoa'
