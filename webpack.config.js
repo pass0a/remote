@@ -6,8 +6,10 @@ let opt_watch = false;
 
 module.exports = () => {
 	let index_file = './src/android.ts';
+	let exclude_file = [ path.resolve(__dirname, 'src/logic_arm.ts'), path.resolve(__dirname, 'src/arm.ts') ];
 	if (process.env.opt == 'arm') {
 		index_file = './src/arm.ts';
+		exclude_file = [ path.resolve(__dirname, 'src/logic_android.ts'), path.resolve(__dirname, 'src/android.ts') ];
 	}
 	const nodeConfig = {
 		// Change to your "entry-point".
@@ -36,6 +38,7 @@ module.exports = () => {
 					// Include ts, tsx, js, and jsx files.
 					test: /\.(ts)x?$/,
 					loader: 'ts-loader',
+					exclude: [ exclude_file ],
 					options: {
 						// 指定特定的ts编译配置，为了区分脚本的ts配置
 						configFile: path.resolve(__dirname, './tsconfig.json')
