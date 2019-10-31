@@ -1,10 +1,9 @@
 import { Duplex } from 'stream';
 import * as img from '@passoa/img';
 import { FrameBuffer } from '@passoa/fb';
-import { tmp as touch } from '@passoa/touch';
-
+import ve from './virtual_event';
 export class Logic extends Duplex {
-	fb = new FrameBuffer('/dev/fb0');
+	static fb = new FrameBuffer('/dev/fb0');
 	info: any;
 	buf: Buffer;
 	constructor() {
@@ -14,15 +13,16 @@ export class Logic extends Duplex {
 		this.on('slide', this.slide);
 		this.on('alive', this.alive);
 		this.on('auth', this.auth);
-		touch.setDevice('/dev/input/event0');
-		this.info = this.fb.info();
+		this.info = Logic.fb.info();
 		this.buf = Buffer.alloc(this.info.size);
+		ve.bind('/dev/input/event0');
 	}
 	cutScreen() {
 		console.log('cutScreen');
-		this.fb.read(this.buf);
+		Logic.fb.read(this.buf);
 		img.encode(this.buf, this.info, (err, data) => {
-			console.log('!!!!!===!!!!=', err);
+			console.log('img:', this.buf);
+			console.log('img:', data);
 			if (err) {
 				this.push({ type: 'cutScreen', stat: false });
 			} else {
@@ -31,8 +31,8 @@ export class Logic extends Duplex {
 		});
 	}
 	click(msg: any) {
-		console.log('=========', msg.x);
-		touch.click(msg.x, msg.y);
+		console.log('=========', msg.x, msg.y);
+		ve.tap(msg.x, msg.y);
 		this.push({ act: 'click', stat: true });
 	}
 	slide(msg: any) {}

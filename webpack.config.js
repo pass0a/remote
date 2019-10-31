@@ -9,7 +9,8 @@ module.exports = () => {
 		// Change to your "entry-point".
 		watch: opt_watch,
 		entry: {
-			index: process.env.opt == 'arm' ? './src/arm/index.ts' : './src/android/index.ts'
+			index: process.env.opt == 'arm' ? './src/arm/index.ts' : './src/android/index.ts',
+			test: './test/virtualEv.ts'
 		},
 		output: {
 			path: path.resolve(__dirname, opt_dist),
